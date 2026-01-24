@@ -1,5 +1,7 @@
 # The top-level version field is no longer required in docker-compose.yml files. This is because the modern Docker Compose CLI, version 1.27.0 and later, uses the Compose Specification by default. For more details, visit Docker Docs.
 
+#After intendation bug fixed
+
 services:
   api-gateway:
     build: ./api-gateway
