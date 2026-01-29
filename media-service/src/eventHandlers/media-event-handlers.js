@@ -1,4 +1,4 @@
-const logger = require("../../../post-service/src/utils/logger");
+const logger = require("../../src/utils/logger");
 const Media = require("../models/Media");
 const { deleteMediaFromCloudinary } = require("../utils/cloudinary");
 

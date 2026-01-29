@@ -1,4 +1,4 @@
-const logger = require("../../../post-service/src/utils/logger");
+const logger = require("../utils/logger");
 const Search = require("../models/Search");
 
 async function handlePostCreated(event) {

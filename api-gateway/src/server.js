@@ -86,7 +86,7 @@ const proxyOptions = {
   proxyErrorHandler: (err, res, next) => {
     logger.error(`Proxy error:${err.message}`);
     res.status(500).json({
-      message: `Internal server error - api gateway server file`,
+      message: `api-gateway : Internal server error`,
       error: err.message,
     });
   },
