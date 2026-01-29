@@ -14,7 +14,8 @@ services:
 
     environment:
       - REDIS_URL=redis://redis:6379
-      - RABBITMQ_URL=amqp://rabbitmq:5672
+      - RABBITMQ_URL=amqp://dev_admin:Dev12345@rabbitmq:5672
+
 
   identity-service:
     build: ./identity-service
@@ -24,7 +25,8 @@ services:
       - rabbitmq
     environment:
       - REDIS_URL=redis://redis:6379
-      - RABBITMQ_URL=amqp://rabbitmq:5672
+      - RABBITMQ_URL=amqp://dev_admin:Dev12345@rabbitmq:5672
+
 
   post-service:
     build: ./post-service
@@ -34,7 +36,8 @@ services:
       - rabbitmq
     environment:
       - REDIS_URL=redis://redis:6379
-      - RABBITMQ_URL=amqp://rabbitmq:5672
+      - RABBITMQ_URL=amqp://dev_admin:Dev12345@rabbitmq:5672
+
 
   media-service:
     build: ./media-service
@@ -44,7 +47,8 @@ services:
       - rabbitmq
     environment:
       - REDIS_URL=redis://redis:6379
-      - RABBITMQ_URL=amqp://rabbitmq:5672
+      - RABBITMQ_URL=amqp://dev_admin:Dev12345@rabbitmq:5672
+
 
   search-service:
     build: ./search-service
@@ -54,7 +58,8 @@ services:
       - rabbitmq
     environment:
       - REDIS_URL=redis://redis:6379
-      - RABBITMQ_URL=amqp://rabbitmq:5672
+      - RABBITMQ_URL=amqp://dev_admin:Dev12345@rabbitmq:5672
+
 
   redis:
     image: redis:7-alpine
@@ -65,7 +70,10 @@ services:
     image: rabbitmq:3-management
     ports:
       - "5672:5672"
-      - "15672:15672"
+      - "15672:15672" 
+    environment:
+      RABBITMQ_DEFAULT_USER: dev_admin
+      RABBITMQ_DEFAULT_PASS: Dev12345  
     healthcheck:
       test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
       interval: 30s

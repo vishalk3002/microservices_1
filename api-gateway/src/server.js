@@ -15,10 +15,18 @@ const app = express();
 const PORT = process.env.PORT;
 
 const redisClient = new Redis(process.env.REDIS_URL);
+redisClient.on("error", (err) => {
+  logger.error("Redis error:", err.message);
+});
+
 
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
+// Only for non-proxy routes (health, metrics, etc.)
+/* app.post("/health", express.json(), (req, res) => {
+  res.send("OK");
+}); */
 
 //rate limiting
 const rateLimitOptions = rateLimit({
@@ -75,10 +83,10 @@ const proxyOptions = {
   },
 
   // Handle errors that occur during proxying
-  proxyErrorhandler: (err, res, next) => {
+  proxyErrorHandler: (err, res, next) => {
     logger.error(`Proxy error:${err.message}`);
     res.status(500).json({
-      message: `Internal server error`,
+      message: `Internal server error - api gateway server file`,
       error: err.message,
     });
   },
@@ -93,7 +101,8 @@ app.use(
   proxy(process.env.IDENTITY_SERVICE_URL, {
     // Target URL where requests will be forwarded. Example: If IDENTITY_SERVICE_URL = "http://localhost:3001". Then /v1/auth/register → http://localhost:3001/api/auth/register
 
-    ...proxyOptions, // Spread operator: Include common proxy configuration. This adds: proxyReqPathResolver (path rewriting) and proxyErrorhandler
+    ...proxyOptions, // Spread operator: Include common proxy configuration. This adds: proxyReqPathResolver (path rewriting) and proxyErrorandler
+
 
     //Decorator function to modify the request before forwarding to backend service
     proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
@@ -217,10 +226,10 @@ app.listen(PORT, () => {
   );
 
   logger.info(
-    `Post service is running on port ${process.env.MEDIA_SERVICE_URL}`,
+    `Media service is running on port ${process.env.MEDIA_SERVICE_URL}`,
   );
   logger.info(
-    `Post service is running on port ${process.env.SEARCH_SERVICE_URL}`,
+    `Search service is running on port ${process.env.SEARCH_SERVICE_URL}`,
   );
   logger.info(`Redis Url ${process.env.REDIS_URL}`);
 });
